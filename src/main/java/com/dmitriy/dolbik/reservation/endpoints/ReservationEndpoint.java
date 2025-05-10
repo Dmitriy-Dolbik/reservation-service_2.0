@@ -8,11 +8,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Path("reservation")//в этом классе будем обрабатывать запросы с путем /reservation
+@Path("reservation")
 public class ReservationEndpoint {
 
-    @GET//обрабатываем HTTP GET запросы
-    @Path("all")//при обращении по пути /reservation/all попадем в этот метод
+    @GET
+    @Path("all")
     public List<Reservation> getAllReservations() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return List.of(
