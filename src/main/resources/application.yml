@@ -1,1 +1,11 @@
-
+quarkus:
+  hibernate-orm:
+    database:
+      generation:
+        create-schemas: true
+    log:
+      sql: true
+  datasource:
+    devservices:
+      port: 5433
+      reuse: false
