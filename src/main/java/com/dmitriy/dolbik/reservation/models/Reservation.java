@@ -1,26 +1,15 @@
 package com.dmitriy.dolbik.reservation.models;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 
-public record Reservation(
-        /**
-         * Идентификатор брони
-         */
-        Long id,
-        /**
-         * Идентификатор пользователя, сделавшего бронь
-         */
-        String userId,
-        /**
-         * Идентификатор забронированного автомобиля
-         */
-        Long carId,
-        /**
-         * Дата начала бронирования
-         */
-        LocalDate startDay,
-        /**
-         * Дата окончания бронирования
-         */
-        LocalDate endDay) {
+@Entity
+@Table(name = "Reservations", schema = "my_schema")
+public class Reservation extends PanacheEntity {
+    public String userId;
+    public Long carId;
+    public LocalDate startDay;
+    public LocalDate endDay;
 }
