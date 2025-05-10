@@ -18,9 +18,9 @@ public class ReservationEndpoint {
     }
 
     @POST
-    @Transactional //операция сохранения записи в БД требует данную аннотацию
+    @Transactional
     public Reservation makeReservation(Reservation reservation) {
-        reservation.persist(); //сохраняем запись в БД
+        reservation.persist();
         return reservation;
     }
 }
