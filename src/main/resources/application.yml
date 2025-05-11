@@ -9,3 +9,6 @@ quarkus:
     devservices:
       port: 5433
       reuse: false
+  rest-client:
+    rental-api:
+      url: http://localhost:8082
