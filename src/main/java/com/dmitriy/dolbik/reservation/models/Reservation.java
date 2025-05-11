@@ -12,4 +12,21 @@ public class Reservation extends PanacheEntity {
     public Long carId;
     public LocalDate startDay;
     public LocalDate endDay;
+
+    /**
+     * Проверям, пересекается ли переданный диапазон дат с датами резервирования
+     * @return false, если даты не пересекаются
+     *                  --------                 переданные даты
+     *                              ********     даты резервирования
+     * или
+     *                  --------
+     *     ********
+     *
+     * true, если даты пересекаются
+     *                  --------
+     *              ********
+     */
+    public boolean isIntersect(LocalDate startDay, LocalDate endDay) {
+        return !(this.endDay.isBefore(startDay) || this.startDay.isAfter(endDay));
+    }
 }
