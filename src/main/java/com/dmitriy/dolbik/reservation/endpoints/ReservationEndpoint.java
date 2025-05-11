@@ -3,6 +3,7 @@ package com.dmitriy.dolbik.reservation.endpoints;
 import com.dmitriy.dolbik.reservation.models.Car;
 import com.dmitriy.dolbik.reservation.models.Reservation;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -48,5 +49,12 @@ public class ReservationEndpoint {
     public Reservation makeReservation(Reservation reservation) {
         reservation.persist();
         return reservation;
+    }
+
+    @DELETE
+    @Path("cancel")
+    @Transactional
+    public boolean cancel(@RestQuery Long reservationId) {
+        return Reservation.deleteById(reservationId);
     }
 }
