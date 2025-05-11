@@ -19,24 +19,16 @@ public class ReservationEndpoint {
 
     @GET
     @Path("available/cars")
-    public Collection<Car> getCarsAvailableForReservations(
-            @RestQuery LocalDate startDate, // в запросе должны быть переданы startDate и endDate
-            @RestQuery LocalDate endDate) { // в формате YYYY-MM-DD
-
-        // получаем все машины (пока хардкод, потом поправим)
+    public Collection<Car> getCarsAvailableForReservations(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate) {
         List<Car> availableCars = List.of(
                 new Car(1L, "licensePlateNumber_1", "manufacturer_1", "model_1"),
                 new Car(2L, "licensePlateNumber_2", "manufacturer_2", "model_2")
         );
-        // упаковываем все машины в мапу, где ключ - это id
         Map<Long, Car> carsByIdMap = new HashMap<>();
         for (Car car : availableCars) {
             carsByIdMap.put(car.id(), car);
         }
-        // получаем все бронирования
         List<Reservation> reservations = Reservation.listAll();
-        // если даты бронирования пересекаются с переданными датами, то удаляем
-        // машину из мапы
         for (Reservation reservation : reservations) {
             if (reservation.isIntersect(startDate, endDate)) {
                 carsByIdMap.remove(reservation.carId);
