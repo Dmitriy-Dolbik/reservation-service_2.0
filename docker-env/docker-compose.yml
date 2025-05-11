@@ -1,0 +1,16 @@
+services:
+  reservation-service-postgres:
+    container_name: reservation-service-postgres
+    image: postgres:14
+    environment:
+      - POSTGRES_PASSWORD=my_password
+      - POSTGRES_USER=my_username
+      - POSTGRES_DB=test_db
+      - TZ=GMT
+      - PGTZ=GMT
+    ports:
+      - 5432:5432
+    volumes:
+      - ../src/main/resources/init-sql-scripts:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
