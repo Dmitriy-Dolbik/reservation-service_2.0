@@ -1,8 +1,10 @@
 package com.dmitriy.dolbik.reservation.endpoints;
 
+import com.dmitriy.dolbik.reservation.clients.GraphQLInventoryClient;
 import com.dmitriy.dolbik.reservation.clients.RentalClient;
 import com.dmitriy.dolbik.reservation.models.Car;
 import com.dmitriy.dolbik.reservation.models.Reservation;
+import io.smallrye.graphql.client.GraphQLClient;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -21,18 +23,18 @@ import java.util.Map;
 public class ReservationEndpoint {
 
     private final RentalClient rentalClient;
+    private final GraphQLInventoryClient inventoryClient;
 
-    public ReservationEndpoint(@RestClient RentalClient rentalClient) {
+    public ReservationEndpoint(@RestClient RentalClient rentalClient,
+                               @GraphQLClient("inventory")GraphQLInventoryClient inventoryClient) {
         this.rentalClient = rentalClient;
+        this.inventoryClient = inventoryClient;
     }
 
     @GET
     @Path("available/cars")
     public Collection<Car> getCarsAvailableForReservations(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate) {
-        List<Car> availableCars = List.of(
-                new Car(1L, "licensePlateNumber_1", "manufacturer_1", "model_1"),
-                new Car(2L, "licensePlateNumber_2", "manufacturer_2", "model_2")
-        );
+        List<Car> availableCars = inventoryClient.getAllCars();
         Map<Long, Car> carsByIdMap = new HashMap<>();
         for (Car car : availableCars) {
             carsByIdMap.put(car.id(), car);

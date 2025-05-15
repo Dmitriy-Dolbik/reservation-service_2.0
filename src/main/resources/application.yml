@@ -12,3 +12,6 @@ quarkus:
   rest-client:
     rental-api:
       url: http://localhost:8082
+  smallrye-graphql-client:
+    inventory:
+      url: http://localhost:8083/graphql
