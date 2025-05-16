@@ -1,10 +1,9 @@
 package com.dmitriy.dolbik.reservation.endpoints;
 
-import com.dmitriy.dolbik.reservation.clients.GraphQLInventoryClient;
+import com.dmitriy.dolbik.reservation.clients.GraphQLInventoryService;
 import com.dmitriy.dolbik.reservation.clients.RentalClient;
 import com.dmitriy.dolbik.reservation.models.Car;
 import com.dmitriy.dolbik.reservation.models.Reservation;
-import io.smallrye.graphql.client.GraphQLClient;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -18,22 +17,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Path("reservation")
 public class ReservationEndpoint {
 
     private final RentalClient rentalClient;
-    private final GraphQLInventoryClient inventoryClient;
+    private final GraphQLInventoryService inventoryClient;
 
     public ReservationEndpoint(@RestClient RentalClient rentalClient,
-                               @GraphQLClient("inventory")GraphQLInventoryClient inventoryClient) {
+                               GraphQLInventoryService inventoryClient) {
         this.rentalClient = rentalClient;
         this.inventoryClient = inventoryClient;
     }
 
     @GET
     @Path("available/cars")
-    public Collection<Car> getCarsAvailableForReservations(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate) {
+    public Collection<Car> getCarsAvailableForReservations(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate) throws ExecutionException, InterruptedException {
         List<Car> availableCars = inventoryClient.getAllCars();
         Map<Long, Car> carsByIdMap = new HashMap<>();
         for (Car car : availableCars) {
