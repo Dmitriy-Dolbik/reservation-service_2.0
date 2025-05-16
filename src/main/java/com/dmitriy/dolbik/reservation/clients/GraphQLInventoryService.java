@@ -28,8 +28,7 @@ public class GraphQLInventoryService {
                         field("allCars",
                                 field("id"),
                                 field("licensePlateNumber"),
-                                field("manufacturer"),
-                                field("model")
+                                field("manufacturer")
                         )
                 )
         );
